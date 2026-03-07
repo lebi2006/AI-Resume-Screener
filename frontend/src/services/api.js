@@ -38,6 +38,7 @@ export const createJob = (data) => api.post('/jobs/', data);
 export const getJobs = () => api.get('/jobs/');
 export const getJob = (id) => api.get(`/jobs/${id}`);
 export const deleteJob = (id) => api.delete(`/jobs/${id}`);
+export const updateJob = (id, data) => api.put(`/jobs/${id}`, data);
 
 // Resumes
 export const uploadResume = (formData) => api.post('/resumes/upload', formData, {
@@ -51,5 +52,9 @@ export const runAnalysis = (resumeId, jobId) =>
 export const getAnalysis = (id) => api.get(`/analysis/results/${id}`);
 export const getRankings = (jobId) => api.get(`/analysis/rankings/${jobId}`);
 export const getSharedAnalysis = (token) => api.get(`/analysis/share/${token}`);
+
+export const deleteResume = (id) => api.delete(`/resumes/${id}`);
+
+export const getStats = () => api.get('/jobs/stats/summary');
 
 export default api;

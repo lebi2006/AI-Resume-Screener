@@ -109,30 +109,6 @@ export default function Register() {
               </div>
             </div>
 
-            {/* Role */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                I am a...
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                {['recruiter', 'jobseeker'].map((role) => (
-                  <button
-                    key={role}
-                    type="button"
-                    onClick={() => setForm({ ...form, role })}
-                    className={`py-2.5 px-4 rounded-lg border text-sm font-medium capitalize transition-colors ${
-                      form.role === role
-                        ? 'border-primary-500 bg-primary-50 text-primary-700'
-                        : 'border-slate-200 text-slate-600 hover:border-slate-300'
-                    }`}
-                  >
-                    <Briefcase className="w-4 h-4 inline mr-1" />
-                    {role}
-                  </button>
-                ))}
-              </div>
-            </div>
-
             <button
               type="submit"
               disabled={loading}

@@ -7,7 +7,6 @@ from app.database import Base
 
 class UserRole(str, enum.Enum):
     recruiter = "recruiter"
-    jobseeker = "jobseeker"
 
 
 class User(Base):

@@ -6,7 +6,6 @@ from typing import Optional
 
 class UserRole(str, Enum):
     recruiter = "recruiter"
-    jobseeker = "jobseeker"
 
 
 class UserCreate(BaseModel):

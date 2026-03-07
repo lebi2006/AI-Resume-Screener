@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getJobs, createJob, deleteJob } from '../services/api';
+import { getJobs, createJob, deleteJob, getStats } from '../services/api';
 import Navbar from '../components/Navbar';
 import {
   Plus, Briefcase, Trash2, ChevronRight,
@@ -22,19 +22,28 @@ export default function Dashboard() {
   const [submitting, setSubmitting] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [stats, setStats] = useState({
+  total_jobs: 0,
+  total_candidates: 0,
+  total_screenings: 0
+});
 
   useEffect(() => { fetchJobs(); }, []);
 
   const fetchJobs = async () => {
-    try {
-      const res = await getJobs();
-      setJobs(res.data);
-    } catch {
-      toast.error('Failed to load jobs');
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    const [jobsRes, statsRes] = await Promise.all([
+      getJobs(),
+      getStats()
+    ]);
+    setJobs(jobsRes.data);
+    setStats(statsRes.data);
+  } catch {
+    toast.error('Failed to load dashboard');
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleCreateJob = async (e) => {
     e.preventDefault();
@@ -97,23 +106,39 @@ export default function Dashboard() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          {[
-            { label: 'Active Jobs', value: jobs.length, icon: <Briefcase className="w-5 h-5 text-primary-500" /> },
-            { label: 'AI Screenings', value: '—', icon: <Brain className="w-5 h-5 text-purple-500" /> },
-            { label: 'Candidates', value: '—', icon: <Users className="w-5 h-5 text-green-500" /> },
-          ].map((stat, i) => (
-            <div key={i} className="card flex items-center gap-4">
-              <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center">
-                {stat.icon}
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-slate-800">{stat.value}</p>
-                <p className="text-sm text-slate-500">{stat.label}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+  {[
+    {
+      label: 'Active Jobs',
+      value: stats.total_jobs,
+      icon: <Briefcase className="w-5 h-5 text-primary-500" />,
+      desc: 'Total job postings'
+    },
+    {
+      label: 'AI Screenings',
+      value: stats.total_screenings,
+      icon: <Brain className="w-5 h-5 text-purple-500" />,
+      desc: 'Resumes analyzed by AI'
+    },
+    {
+      label: 'Candidates',
+      value: stats.total_candidates,
+      icon: <Users className="w-5 h-5 text-green-500" />,
+      desc: 'Total resumes uploaded'
+    },
+  ].map((stat, i) => (
+    <div key={i} className="card flex items-center gap-4">
+      <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center">
+        {stat.icon}
+      </div>
+      <div>
+        <p className="text-2xl font-bold text-slate-800">{stat.value}</p>
+        <p className="text-sm font-medium text-slate-700">{stat.label}</p>
+        <p className="text-xs text-slate-400">{stat.desc}</p>
+      </div>
+    </div>
+  ))}
+</div>
 
         {/* Jobs List */}
         <div className="card">

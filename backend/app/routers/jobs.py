@@ -81,3 +81,29 @@ def delete_job(
         raise HTTPException(status_code=404, detail="Job not found")
     db.delete(job)
     db.commit()
+
+@router.get("/stats/summary")
+def get_stats(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    from app.models.resume import Resume
+    from app.models.analysis import Analysis
+
+    total_jobs = db.query(Job).filter(
+        Job.user_id == current_user.id
+    ).count()
+
+    total_candidates = db.query(Resume).filter(
+        Resume.user_id == current_user.id
+    ).count()
+
+    total_screenings = db.query(Analysis).join(Job).filter(
+        Job.user_id == current_user.id
+    ).count()
+
+    return {
+        "total_jobs": total_jobs,
+        "total_candidates": total_candidates,
+        "total_screenings": total_screenings
+    }
