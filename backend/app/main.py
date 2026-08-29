@@ -13,9 +13,15 @@ app = FastAPI(
     redoc_url="/redoc" if settings.DEBUG else None
 )
 
+origins = [
+    "http://localhost:3000",
+    "https://ai-resume-screener-nine-mu.vercel.app",
+    "https://ai-resume-screener-git-main-lebi-maria-c-s-projects.vercel.app",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.origins_list,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
