@@ -1,9 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import get_settings
-from app.routers import auth, jobs, resumes, analysis
+from app.database import engine, Base
+from app.models import user, job, resume, analysis
+from app.routers import auth, jobs, resumes, analysis as analysis_router
 
 settings = get_settings()
+
+# Create all tables on startup
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -30,7 +35,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(jobs.router)
 app.include_router(resumes.router)
-app.include_router(analysis.router)
+app.include_router(analysis_router.router)
 
 
 @app.get("/", tags=["Health"])
