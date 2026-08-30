@@ -121,7 +121,11 @@ def delete_resume(
     if not resume:
         raise HTTPException(status_code=404, detail="Resume not found")
 
-    # Delete file from disk (best effort — ephemeral FS on free tier)
+    # Delete linked analyses first to avoid FK constraint violation
+    from app.models.analysis import Analysis
+    db.query(Analysis).filter(Analysis.resume_id == resume_id).delete()
+
+    # Delete file from disk (best effort)
     try:
         if resume.file_path and os.path.exists(resume.file_path):
             os.remove(resume.file_path)
