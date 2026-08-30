@@ -121,9 +121,13 @@ def delete_resume(
     if not resume:
         raise HTTPException(status_code=404, detail="Resume not found")
 
-    # Delete file from disk
-    if os.path.exists(resume.file_path):
-        os.remove(resume.file_path)
+    # Delete file from disk (best effort — ephemeral FS on free tier)
+    try:
+        if resume.file_path and os.path.exists(resume.file_path):
+            os.remove(resume.file_path)
+    except Exception:
+        pass
 
     db.delete(resume)
     db.commit()
+    return None

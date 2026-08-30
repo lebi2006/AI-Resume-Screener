@@ -65,17 +65,31 @@ def extract_skills_section(text: str) -> list:
         # Web
         "react", "angular", "vue", "node.js", "fastapi", "django", "flask",
         "express", "html", "css", "tailwind", "bootstrap", "nextjs",
-        # Data & AI
+        # Data & AI — Modern
         "machine learning", "deep learning", "nlp", "computer vision",
         "tensorflow", "pytorch", "scikit-learn", "pandas", "numpy",
         "data analysis", "data science", "sql", "mongodb",
+        "rag", "retrieval augmented generation", "langchain", "llamaindex",
+        "llm", "large language model", "generative ai", "gen ai",
+        "huggingface", "transformers", "vector database", "pinecone",
+        "chromadb", "weaviate", "faiss", "embeddings", "fine-tuning",
+        "prompt engineering", "openai", "gemini", "claude", "llama",
+        "stable diffusion", "diffusion models", "reinforcement learning",
+        "federated learning", "xgboost", "lightgbm", "random forest",
+        "neural network", "cnn", "rnn", "lstm", "attention mechanism",
+        "bert", "gpt", "t5", "sentence transformers",
         # Cloud & DevOps
         "aws", "azure", "gcp", "docker", "kubernetes", "ci/cd",
-        "git", "github", "linux", "terraform", "jenkins",
+        "git", "github", "linux", "terraform", "jenkins", "mlops",
+        "sagemaker", "vertex ai", "azure ml",
         # Databases
         "postgresql", "mysql", "redis", "elasticsearch", "sqlite",
+        "cassandra", "dynamodb", "neo4j",
         # Other
-        "rest api", "graphql", "agile", "scrum", "microservices"
+        "rest api", "graphql", "agile", "scrum", "microservices",
+        "kafka", "spark", "hadoop", "airflow", "dbt",
+        "power bi", "tableau", "looker", "streamlit", "gradio",
+        "opencv", "nltk", "spacy", "gensim"
     ]
     text_lower = text.lower()
     found = [skill for skill in KNOWN_SKILLS if skill in text_lower]
